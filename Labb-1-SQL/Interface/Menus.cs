@@ -54,6 +54,19 @@ namespace Labb_1_SQL.NewFolder
                     case "3": // get all clasees
                         DisplayTable.GetTable(connection, @"
                         SELECT * FROM Classes", classDisplayMethod);
+
+                        Console.Write("Which class would you like to see students of?: ");
+                        /* Incomplete
+                        string className = Console.ReadLine();
+                        //using (SqlCommand command = new SqlCommand("GetClassStudents", connection))
+                        //{
+                        //    command.CommandType = System.Data.CommandType.StoredProcedure;
+                        //    command.Parameters.AddWithValue("@ClassName", className);
+                        //}
+                        //Console.WriteLine("");
+                        //Console.WriteLine("Press enter to continue");
+                        //Console.ReadLine();
+                        */
                         SubMenu.FilterOption(connection, "Enter the class code to view students or press 'e' to go back:", @"
                         SELECT * FROM Students 
                         INNER JOIN Classes ON Students.ClassId_FK = Classes.ClassId
@@ -69,25 +82,15 @@ namespace Labb_1_SQL.NewFolder
                         personnelDisplayMethod);
                         break;
                     case "5": // add new personnel
-                        SubMenu.AddData(connection,"personnel")
+                        SubMenu.AddData(connection, "personnel");
                         break;
                     case "6": // get gradings, last 30 days
                         DisplayTable.GetTable(connection, @"
-                        SELECT 
-                            Students.FirstName AS StudentFirstName,
-                            Students.LastName AS StudentLastName,
-                            Grade,
-                            Courses.CourseName AS CourseName,
-                            Personnel.FirstName AS TeacherFirstName,
-                            Personnel.LastName AS TeacherLastName,
-                            GradeDate
-                        FROM Grades
-                        INNER JOIN Students ON Grades.StudentId_FK = Students.StudentId
-                        INNER JOIN Courses ON Grades.CourseId_FK = Courses.CourseId
-                        INNER JOIN Personnel ON Grades.PersonnelId_FK = Personnel.PersonnelId
-                        WHERE GradeDate >= DATEADD(day, -30, GETDATE())", 
+                        SELECT * FROM GradesLast30Days",
                         gradeDisplayMethod);
-                        SubMenu.FilterOption(connection, "Press enter to go back", "", gradeDisplayMethod);
+                        Console.WriteLine("");
+                        Console.WriteLine("Press enter to continue");
+                        Console.ReadLine();
                         break;
                     case "7": // Get all courses and average grades
                         DisplayTable.GetTable(connection, @"
@@ -100,7 +103,9 @@ namespace Labb_1_SQL.NewFolder
                         LEFT JOIN Grades ON Courses.CourseId = Grades.CourseId_FK 
                         GROUP BY Courses.CourseName", 
                         courseDisplayMethod);
-                        SubMenu.FilterOption(connection, "Press enter to go back", "", gradeDisplayMethod);
+                        Console.WriteLine("");
+                        Console.WriteLine("Press enter to continue");
+                        Console.ReadLine();
                         break;
                     case "e":
                         Console.WriteLine("bye");

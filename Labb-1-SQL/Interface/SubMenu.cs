@@ -74,7 +74,7 @@ namespace Labb_1_SQL.Interface
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Input Error");
+                    Console.WriteLine($"Error: {ex.Message}");
                 }
                 Console.WriteLine();
                 Console.Write("Press enter to continue");
