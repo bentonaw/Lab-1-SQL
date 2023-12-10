@@ -9,32 +9,24 @@ namespace Labb_1_SQL
 {
     internal class Students
     {
-        internal static void GetStudents()
+        internal static void GetStudents(SqlConnection connection)
         {
-            string connectionString = @"Data Source=(localdb)\.;Initial Catalog=LAB1SQL;Integrated Security=True;Pooling=False";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            using (SqlCommand command = new SqlCommand("SELECT * FROM Students INNER JOIN Classes ON Students.ClassId_FK = Classes.ClassId", connection))
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand("SELECT * FROM Students INNER JOIN Classes ON Students.ClassId_FK = Classes.ClassId", connection))
+                using (SqlDataReader reader = command.ExecuteReader())
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    Console.Clear();
+                    while (reader.Read())
                     {
-                        Console.Clear();
-                        while (reader.Read())
-                        {
-                            string firstName = reader.GetString(reader.GetOrdinal("FirstName"));
-                            string lastName = reader.GetString(reader.GetOrdinal("LastName"));
-                            string classCode = reader.GetString(reader.GetOrdinal("ClassCode"));
-
-                            Console.WriteLine($"Name: {firstName} {lastName},\t Class: {classCode}");
-                        }
+                        StudentDisplay(reader);
                     }
                 }
-                // menu for selecting sorting order
-                SortMenu(connection);
             }
+            // menu for selecting sorting order
+            SortMenu(connection);
         }
-        static void StudentDisplay(SqlDataReader reader)
+
+        internal static void StudentDisplay(SqlDataReader reader)
         {
             string firstName = reader.GetString(reader.GetOrdinal("FirstName"));
             string lastName = reader.GetString(reader.GetOrdinal("LastName"));
@@ -42,7 +34,8 @@ namespace Labb_1_SQL
 
             Console.WriteLine($"Name: {firstName} {lastName},\t Class: {classCode}");
         }
-        static void StudentList(string sort, SqlConnection connection)
+
+        private static void StudentList(string sort, SqlConnection connection)
         {
             Console.Clear();
             using (SqlCommand command = new SqlCommand(sort, connection))
