@@ -51,6 +51,7 @@ namespace Labb_1_SQL
                         Students.GetStudents();
                         break;
                     case "2":
+                        Classes.GetClasses();
                         break;
                     case "3":
                         break;
